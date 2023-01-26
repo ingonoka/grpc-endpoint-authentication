@@ -1,0 +1,14 @@
+= Library for adding endpoint identity information to GRPC calls
+
+image:https://img.shields.io/github/v/tag/ingonoka/grpc-endpoint-authentication?label=Latest[GitHub tag (latest by date)]
+
+The library is meant for sending endpoint identity information to the server. The library also provides a mechanism to authenticate the endpoint and to check timestamps to prevent replay attacks.
+
+== Setup
+Include the latest library version in your `gradle.build` dependency block
+
+[source,Groovy]
+.Replace the `latest` placeholder with the latest release version
+----
+implementation "com.ingonoka:grpc-endpoint-authentication:<latest>"
+----
