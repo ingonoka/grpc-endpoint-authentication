@@ -21,7 +21,11 @@ expect fun decrypt(key: SecretKey, encryptedSecret: ByteArray): Result<ByteArray
 
 expect fun encrypt(key: SecretKey, secret: ByteArray): Result<ByteArray>
 
-expect fun generateKey(secretKeys: HashMap<EndpointIdentity, SecretKey>, endpointIdentity: EndpointIdentity): SecretKey
+expect fun generateKey(
+    secretKeys: HashMap<EndpointIdentity, SecretKey>,
+    endpointIdentity: EndpointIdentity,
+    password: String = ""
+): SecretKey
 
 
 /**
@@ -35,7 +39,11 @@ expect fun generateKey(secretKeys: HashMap<EndpointIdentity, SecretKey>, endpoin
  * @return false if [checkTimeDifferenceMs] is not 0 and the time string represents a time that does not fall
  * in the time interval of +/- [checkTimeDifferenceMs] from now, return true otherwise
  */
-class TokenProviderV1Impl(private val checkTimeDifferenceMs: Duration, private val timeProvider: () -> Instant) : TokenProvider {
+class TokenProviderV1Impl(
+    private val password: String = "",
+    private val checkTimeDifferenceMs: Duration,
+    private val timeProvider: () -> Instant
+) : TokenProvider {
 
     /**
      * Cache secret keys because the key will be needed for every authentication
@@ -46,10 +54,10 @@ class TokenProviderV1Impl(private val checkTimeDifferenceMs: Duration, private v
         endpointIdentityAuthenticationToken: EndpointIdentityAuthenticationToken
     ): Result<Pair<ValidationResult, Instant?>> = try {
 
-        require (endpointIdentityAuthenticationToken.version == 1)
-        { "The version of the token for this token provider must be 1.  It is ${endpointIdentityAuthenticationToken.version}"}
+        require(endpointIdentityAuthenticationToken.version == 1)
+        { "The version of the token for this token provider must be 1.  It is ${endpointIdentityAuthenticationToken.version}" }
 
-        val key = generateKey(secretKeys, endpointIdentityAuthenticationToken.endpointIdentity)
+        val key = generateKey(secretKeys, endpointIdentityAuthenticationToken.endpointIdentity, password)
 
         val tokenTime = decrypt(key, endpointIdentityAuthenticationToken.encryptedSecret)
             .map { Instant.fromEpochSeconds(it.toString(Charsets.UTF_8).toLong(10)) }
@@ -77,7 +85,7 @@ class TokenProviderV1Impl(private val checkTimeDifferenceMs: Duration, private v
 
         val formattedTime: String = timeProvider().epochSeconds.toString(10)
 
-        val key = generateKey(secretKeys, endpointIdentity)
+        val key = generateKey(secretKeys, endpointIdentity, password)
 
         val encryptedSecret = encrypt(key, formattedTime.encodeToByteArray()).getOrThrow()
 

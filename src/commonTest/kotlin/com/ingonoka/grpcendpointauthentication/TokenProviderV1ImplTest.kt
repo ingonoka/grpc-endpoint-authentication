@@ -24,14 +24,14 @@ class TokenProviderV1ImplTest {
     fun testCreateToken() {
 
 
-        val tokenProvider = TokenProviderV1Impl(Duration.ZERO) { Instant.fromEpochSeconds(1674724963) }
+        val tokenProvider = TokenProviderV1Impl("s3cr3t", Duration.ZERO) { Instant.fromEpochSeconds(1674724963) }
 
         val token = tokenProvider.generateToken(EndpointIdentity("GLOBAL", byteArrayOf(1,2,3,4,5))).getOrThrow()
 
         assertEquals(1, token.version)
         assertEquals("GLOBAL", token.endpointIdentity.domain)
         assertContentEquals(byteArrayOf(1,2,3,4,5), token.endpointIdentity.identifier)
-        assertContentEquals(byteArrayOf(7,-59,40,-67,-79,-22,16,-91,-99,18,126,-89,-84,10,-67,-93), token.encryptedSecret)
+        assertContentEquals(byteArrayOf(-30, -61, 94, 117, 56, -78, -54, 17, 13, 98, 54, -68, 105, -51, 60, 119), token.encryptedSecret)
 
     }
 
@@ -40,7 +40,7 @@ class TokenProviderV1ImplTest {
 
         val tokenInstance = Instant.fromEpochSeconds(1674724963)
 
-        val tokenProvider = TokenProviderV1Impl(Duration.ZERO) { tokenInstance }
+        val tokenProvider = TokenProviderV1Impl("s3cr3t", Duration.ZERO) { tokenInstance }
 
         val token = tokenProvider.generateToken(EndpointIdentity("GLOBAL", byteArrayOf(1,2,3,4,5))).getOrThrow()
 
@@ -54,8 +54,8 @@ class TokenProviderV1ImplTest {
 
         val tokenInstance = Clock.System.now() - 11.seconds
 
-        val tokenProvider10Seconds = TokenProviderV1Impl(10.seconds) { tokenInstance }
-        val tokenProvider20Seconds = TokenProviderV1Impl(20.seconds) { tokenInstance }
+        val tokenProvider10Seconds = TokenProviderV1Impl("s3cr3t", 10.seconds) { tokenInstance }
+        val tokenProvider20Seconds = TokenProviderV1Impl("s3cr3t", 20.seconds) { tokenInstance }
 
         val token = tokenProvider10Seconds.generateToken(EndpointIdentity("GLOBAL", byteArrayOf(1,2,3,4,5))).getOrThrow()
 

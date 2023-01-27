@@ -62,11 +62,12 @@ actual fun encrypt(key: SecretKey, secret: ByteArray): Result<ByteArray> = try {
  */
 actual fun generateKey(
     secretKeys: HashMap<EndpointIdentity, SecretKey>,
-    endpointIdentity: EndpointIdentity
+    endpointIdentity: EndpointIdentity,
+    password: String
 ): SecretKey = secretKeys.getOrPut(endpointIdentity) {
     val salt = endpointIdentity.identifier
     val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
-    val password = endpointIdentity.domain.toCharArray()
-    val spec: KeySpec = PBEKeySpec(password, salt, 1000, 128)
+    val combinedPassword = endpointIdentity.domain.toCharArray() + password.toCharArray()
+    val spec: KeySpec = PBEKeySpec(combinedPassword, salt, 1000, 128)
     SecretKeySpec(factory.generateSecret(spec).encoded, "AES")
 }
