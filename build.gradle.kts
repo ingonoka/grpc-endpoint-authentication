@@ -6,6 +6,7 @@
  * Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
  *
  */
+@file:Suppress("UnstableApiUsage")
 
 import java.io.ByteArrayOutputStream
 
@@ -75,15 +76,18 @@ kotlin {
 
 android {
     namespace = "com.ingonoka.grpcendpointauthentication"
-    compileSdk=31
+    compileSdk=33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk=24
-        targetSdk=31
+        targetSdk=33
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    publishing {
+        singleVariant("release")
     }
 }
 
@@ -116,6 +120,7 @@ signing {
     sign(publishing.publications)
 }
 
+// Create empty javadoc to satisfy validation for maven central via sonatype staging
 val javadocJar by tasks.registering(Jar::class) {
     archiveClassifier.set("javadoc")
 }
@@ -131,15 +136,6 @@ afterEvaluate {
 
                 artifact(javadocJar.get())
                 from(components["release"])
-            }
-
-            register<MavenPublication>("debug") {
-                groupId = "com.ingonoka"
-                artifactId = "grpc-endpoint-authentication-debug"
-                version = version.toString()
-
-                from(components["debug"])
-
             }
 
             withType<MavenPublication> {
