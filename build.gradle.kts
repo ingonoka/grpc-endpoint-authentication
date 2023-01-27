@@ -116,21 +116,26 @@ signing {
     sign(publishing.publications)
 }
 
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
 afterEvaluate {
     publishing {
         publications {
 
             register<MavenPublication>("release") {
                 groupId = "com.ingonoka"
-                artifactId = "grpc-endpoint-authentication"
+                artifactId = "grpc-endpoint-authentication-release"
                 version = version.toString()
 
+                artifact(javadocJar.get())
                 from(components["release"])
             }
 
             register<MavenPublication>("debug") {
                 groupId = "com.ingonoka"
-                artifactId = "grpc-endpoint-authentication"
+                artifactId = "grpc-endpoint-authentication-debug"
                 version = version.toString()
 
                 from(components["debug"])
