@@ -24,7 +24,7 @@ val META_DATA_KEY_AUTHENTICATION: Metadata.Key<ByteArray> =
  *
  * Usage example:
  * ````
- * val credentials = BasicAuthenticationCallCredentials(authenticationService.generateToken(terminalIdentity))
+ * val credentials = BasicAuthenticationCallCredentials(authenticationService.generateToken(endpointIdentity))
  * val stub = HeartbeatServiceGrpc.newStub(channel).withCallCredentials(credentials)
  * ````
  */

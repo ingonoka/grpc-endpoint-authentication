@@ -13,13 +13,13 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
     }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.namespace == "com.android") {
-                useModule("com.android.tools.build:gradle:7.3.0")
-            }
-        }
-    }
+//    resolutionStrategy {
+//        eachPlugin {
+//            if (requested.id.namespace == "com.android") {
+//                useModule("com.android.tools.build:gradle:7.3.0")
+//            }
+//        }
+//    }
 }
 rootProject.name = "grpc-endpoint-authentication"
 

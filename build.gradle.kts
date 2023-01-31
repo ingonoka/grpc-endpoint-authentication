@@ -12,8 +12,8 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     kotlin("multiplatform") version "1.8.0"
-    id("com.android.library")
     kotlin("plugin.serialization") version "1.8.0"
+    id("com.android.library") version "7.3.0"
     id("maven-publish")
     id("signing")
 }
