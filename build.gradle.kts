@@ -33,7 +33,7 @@ kotlin {
         }
     }
     android {
-        publishLibraryVariants("release", "debug")
+        publishLibraryVariants("release")
     }
     sourceSets {
         val commonMain by getting {
