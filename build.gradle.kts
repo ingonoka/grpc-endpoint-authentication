@@ -128,16 +128,17 @@ afterEvaluate {
     publishing {
         publications {
 
-            register<MavenPublication>("release") {
-                groupId = "com.ingonoka"
-                artifactId = "grpc-endpoint-authentication-release"
-                version = version.toString()
-
-                artifact(javadocJar.get())
-                from(components["release"])
-            }
+//            register<MavenPublication>("release") {
+//                groupId = "com.ingonoka"
+//                artifactId = "grpc-endpoint-authentication-release"
+//                version = version.toString()
+//
+//                artifact(javadocJar.get())
+//                from(components["release"])
+//            }
 
             withType<MavenPublication> {
+                artifact(javadocJar.get())
                 pom {
                     name.set("Endpoint authentication in grpc calls")
                     description.set("A library implementing a simple protocol to identify and authenticate endpoints in grpc calls")
