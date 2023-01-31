@@ -61,7 +61,6 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation("com.google.android.material:material:1.7.0")
                 implementation("com.google.protobuf:protobuf-javalite:3.21.12")
                 implementation("io.grpc:grpc-protobuf-lite:1.52.1")
             }
@@ -76,11 +75,11 @@ kotlin {
 
 android {
     namespace = "com.ingonoka.grpcendpointauthentication"
-    compileSdk=33
+    compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk=24
-        targetSdk=33
+        minSdk = 24
+        targetSdk = 33
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
