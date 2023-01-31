@@ -125,17 +125,10 @@ val javadocJar by tasks.registering(Jar::class) {
 }
 
 afterEvaluate {
-    publishing {
-        publications {
 
-//            register<MavenPublication>("release") {
-//                groupId = "com.ingonoka"
-//                artifactId = "grpc-endpoint-authentication-release"
-//                version = version.toString()
-//
-//                artifact(javadocJar.get())
-//                from(components["release"])
-//            }
+    publishing {
+
+        publications {
 
             withType<MavenPublication> {
                 artifact(javadocJar.get())
@@ -175,6 +168,18 @@ afterEvaluate {
                     }
                 }
             }
+
+
+            project.getTasksByName("publishJvmPublicationToSonatypeRepository", false)
+                .first()
+                .dependsOn("signJvmPublication", "signAndroidReleasePublication", "signKotlinMultiplatformPublication")
+            project.getTasksByName("publishAndroidReleasePublicationToSonatypeRepository", false)
+                .first()
+                .dependsOn("signJvmPublication", "signAndroidReleasePublication", "signKotlinMultiplatformPublication")
+            project.getTasksByName("publishKotlinMultiplatformPublicationToSonatypeRepository", false)
+                .first()
+                .dependsOn("signJvmPublication", "signAndroidReleasePublication", "signKotlinMultiplatformPublication")
+
         }
     }
 }
