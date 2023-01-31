@@ -41,7 +41,7 @@ expect fun generateKey(
  */
 class TokenProviderV1Impl(
     private val password: String = "",
-    private val checkTimeDifferenceMs: Duration,
+    private val checkTimeDifferenceMs: Duration = Duration.ZERO,
     private val timeProvider: () -> Instant
 ) : TokenProvider {
 
